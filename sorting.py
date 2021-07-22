@@ -90,6 +90,7 @@ def shell_sort1(nums: List[int]) -> List[int]:
         gap //= 2
     return nums
 
+
 def shell_sort2(nums):
     n = len(nums)
     gap = n // 2
@@ -103,12 +104,58 @@ def shell_sort2(nums):
     return nums
 
 
-def merge_sort():
-    return
+def __merge_helper(left: List[int], right: List[int]) -> List[int]:
+    result = []
+    while left and right:
+        if left[0] <= right[0]:
+            result.append(left.pop(0))
+        else:
+            result.append(right.pop(0))
+    while left:
+        result.append(left.pop(0))
+    while right:
+        result.append(right.pop(0))
+
+    return result
 
 
-def quick_sort():
-    return
+def merge_sort(nums):
+    n = len(nums)
+    if n < 2:
+        return nums
+    middle = n // 2
+    left, right = nums[0:middle], nums[middle:]
+    return __merge_helper(left, right)
+
+
+def __partition(nums, left, right):
+    pivot = left
+    index = pivot + 1
+    i = index
+    while i <= right:
+        if nums[i] < nums[pivot]:
+            nums[i], nums[index] = nums[index], nums[i]
+            index += 1
+        i += 1
+    nums[pivot], nums[index - 1] = nums[nums - 1], nums[pivot]
+    return index - 1
+
+
+def quick_sort(nums, left=None, right=None):
+    if not isinstance(left, (int, float)):
+        left = 0
+    else:
+        left = left
+    if not isinstance(right, (int, float)):
+        right = len(nums) - 1
+    else:
+        right = right
+
+    if left < right:
+        partition_index = __partition(nums, left, right)
+        quick_sort(nums, left, partition_index - 1)
+        quick_sort(nums, partition_index + 1, right)
+    return nums
 
 
 def heap_sort():
