@@ -141,21 +141,41 @@ def __partition(nums, left, right):
     return index - 1
 
 
-def quick_sort(nums, left=None, right=None):
-    if not isinstance(left, (int, float)):
-        left = 0
-    else:
-        left = left
-    if not isinstance(right, (int, float)):
-        right = len(nums) - 1
-    else:
-        right = right
-
+def quick_sort1(nums, left=None, right=None):
+    if len(nums) < 2:
+        return nums
+    left = 0 if left is None else left
+    right = len(nums) - 1 if right is None else right
     if left < right:
         partition_index = __partition(nums, left, right)
-        quick_sort(nums, left, partition_index - 1)
-        quick_sort(nums, partition_index + 1, right)
+        quick_sort1(nums, left, partition_index - 1)
+        quick_sort1(nums, partition_index + 1, right)
     return nums
+
+def quick_sort(nums):
+    return quick_sort2(nums, 0, len(nums) - 1)
+
+
+def quick_sort2(nums, left=None, right=None):
+    if left >= right:
+        return nums
+    pivot = left
+    lo, hi = left + 1, right
+    while lo <= hi:
+        if nums[lo] > nums[pivot]:
+            nums[lo], nums[hi] = nums[hi], nums[lo]
+            hi -= 1
+        else:
+            lo += 1
+    lo -= 1
+    nums[pivot], nums[lo] = nums[lo], nums[pivot]
+    quick_sort2(nums, left, lo - 1)
+    quick_sort2(nums, lo + 1, right)
+    return nums
+
+
+def __heapify(nums, i):
+    pass
 
 
 def heap_sort():
